@@ -6,6 +6,12 @@ const URL : string = "https://api.aladhan.com/v1/timingsByAddress/16-10-2025?add
 const App : FC = () => {
 
   const [fajr, setFajr] = useState('00:00');
+  const [dhuhr, setDhuhr] = useState('00:00');
+  const [asr, setAsr] = useState('00:00');
+  const [maghrib, setMaghrib] = useState('00:00');
+  const [isha, setIsha] = useState('00:00');
+  const [sunrise, setSunrise] = useState('00:00');
+  const [sunset, setSunset] = useState('00:00');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,6 +19,12 @@ const App : FC = () => {
       result.json().then(json => {
         console.log(json);
         setFajr(json.data.timings.Fajr);
+        setDhuhr(json.data.timings.Dhuhr);
+        setAsr(json.data.timings.Asr);
+        setMaghrib(json.data.timings.Maghrib);
+        setIsha(json.data.timings.Isha);
+        setSunrise(json.data.timings.Sunrise);
+        setSunset(json.data.timings.Sunset);
       })
     }
     fetchData();
@@ -21,7 +33,20 @@ const App : FC = () => {
   return (
     <React.Fragment>
       <h1>React Prayer Times</h1>
-      Fajr: {fajr}
+      Date: 16/01/2025 
+      <ul>
+        <li>Fajr: {fajr}</li>
+        <li>Dhuhr: {dhuhr}</li>
+        <li>Asr: {asr}</li>
+        <li>Maghrib: {maghrib}</li>
+        <li>Isha: {isha}</li>
+      </ul>
+
+      <ul>
+        <li>Sunrise: {sunrise}</li>
+        <li>Sunset: {sunset}</li>
+      </ul>
+      
     </React.Fragment>
   )
 }
