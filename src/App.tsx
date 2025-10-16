@@ -1,9 +1,20 @@
 import React, {FC, useState, useEffect} from 'react';
 import './App.css';
+import { format } from 'date-fns';
 
-const URL : string = "https://api.aladhan.com/v1/timingsByAddress/16-10-2025?address=Guildford%2C+UK&method=3&shafaq=general&tune=5%2C3%2C5%2C7%2C9%2C-1%2C0%2C8%2C-6&timezonestring=UTC&calendarMethod=UAQ";
+const baseURL : string = "https://api.aladhan.com/v1/timingsByAddress/";
+const URLendpoint : string = "?address=Guildford%2C+UK&method=3&shafaq=general&tune=5%2C3%2C5%2C7%2C9%2C-1%2C0%2C8%2C-6&timezonestring=UTC&calendarMethod=UAQ";
 
 const App : FC = () => {
+
+  const [date, setDate] = useState('DD-MM-YYYY');
+  
+  useEffect(() => {
+    const today = format(new Date(), 'dd-mm-yyyy');
+    setDate(today);
+  })
+
+  let URL : string = baseURL + date + URLendpoint;
 
   const [fajr, setFajr] = useState('00:00');
   const [dhuhr, setDhuhr] = useState('00:00');
@@ -33,7 +44,7 @@ const App : FC = () => {
   return (
     <React.Fragment>
       <h1>React Prayer Times</h1>
-      Date: 16/01/2025 
+      Date: 16/01/2025, Guildford, UK
       <ul>
         <li>Fajr: {fajr}</li>
         <li>Dhuhr: {dhuhr}</li>
