@@ -1,26 +1,15 @@
-import React from 'react';
+import React, {FC, } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+const URL : string = "https://api.aladhan.com/v1/timingsByAddress/16-10-2025?address=Guildford%2C+UK&method=3&shafaq=general&tune=5%2C3%2C5%2C7%2C9%2C-1%2C0%2C8%2C-6&timezonestring=UTC&calendarMethod=UAQ";
+
+const App : FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <React.Fragment>
+      <h1>React Prayer Times</h1>
+    </React.Fragment>
+  )
 }
 
 export default App;
