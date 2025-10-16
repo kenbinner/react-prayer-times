@@ -10,7 +10,7 @@ const App : FC = () => {
   const [date, setDate] = useState('DD-MM-YYYY');
   
   useEffect(() => {
-    const today = format(new Date(), 'dd-MM-yyyy');
+    const today = format(new Date(), 'dd-mm-yyyy');
     setDate(today);
   })
 
@@ -43,19 +43,19 @@ const App : FC = () => {
 
   return (
     <React.Fragment>
-      <h1>React Prayer Times</h1>
+      <h1 style={{color: 'darkgreen'}}>React Prayer Times</h1>
       Date: {date}, Guildford, UK
       <ul>
-        <li>Fajr: {fajr}</li>
-        <li>Dhuhr: {dhuhr}</li>
-        <li>Asr: {asr}</li>
-        <li>Maghrib: {maghrib}</li>
-        <li>Isha: {isha}</li>
+        <li><b>Fajr:</b> {fajr}</li>
+        <li><b>Dhuhr:</b> {dhuhr}</li>
+        <li><b>Asr:</b> {asr}</li>
+        <li><b>Maghrib:</b> {maghrib}</li>
+        <li><b>Isha:</b> {isha}</li>
       </ul>
 
       <ul>
-        <li>Sunrise: {sunrise}</li>
-        <li>Sunset: {sunset}</li>
+        <li className='sun'><b>Sunrise:</b> {sunrise}</li>
+        <li className='sun'><b>Sunset:</b> {sunset}</li>
       </ul>
       
     </React.Fragment>
