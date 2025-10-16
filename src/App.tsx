@@ -10,7 +10,7 @@ const App : FC = () => {
   const [date, setDate] = useState('DD-MM-YYYY');
   
   useEffect(() => {
-    const today = format(new Date(), 'dd-mm-yyyy');
+    const today = format(new Date(), 'dd-MM-yyyy');
     setDate(today);
   })
 
@@ -44,7 +44,7 @@ const App : FC = () => {
   return (
     <React.Fragment>
       <h1>React Prayer Times</h1>
-      Date: 16/01/2025, Guildford, UK
+      Date: {date}, Guildford, UK
       <ul>
         <li>Fajr: {fajr}</li>
         <li>Dhuhr: {dhuhr}</li>
