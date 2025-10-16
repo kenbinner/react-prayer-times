@@ -10,7 +10,7 @@ const App : FC = () => {
   const [date, setDate] = useState('DD-MM-YYYY');
   
   useEffect(() => {
-    const today = format(new Date(), 'dd-mm-yyyy');
+    const today = format(new Date(), 'dd-MM-yyyy');
     setDate(today);
   })
 
