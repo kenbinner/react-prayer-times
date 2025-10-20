@@ -7,13 +7,17 @@ const URLendpoint : string = "?address=Guildford%2C+UK&method=3&shafaq=general&t
 
 const App : FC = () => {
 
+  let coords : number[] = [0,0];
+  let location : string  = '';
   const [date, setDate] = useState('DD-MM-YYYY');
   
+  //Format Date
   useEffect(() => {
     const today = format(new Date(), 'dd-MM-yyyy');
     setDate(today);
   })
 
+  //Constructing URL
   let URL : string = baseURL + date + URLendpoint;
 
   const [fajr, setFajr] = useState('00:00');
@@ -24,6 +28,7 @@ const App : FC = () => {
   const [sunrise, setSunrise] = useState('00:00');
   const [sunset, setSunset] = useState('00:00');
 
+  //fetch Prayer Time data from URL
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(URL)
@@ -40,6 +45,28 @@ const App : FC = () => {
     }
     fetchData();
   }, []);
+
+  //Fetch user location
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        coords = [
+          position.coords.latitude,
+          position.coords.longitude
+        ];
+        console.log(coords);
+      },
+      (error) => {
+        console.error("Location error:", error);
+        //default to Guildford
+        coords = [
+          51.24436312957442, 
+          -0.5678265590129494
+        ]
+        console.log("error getting coords");
+      }
+    )
+  }, [])
 
   return (
     <React.Fragment>
