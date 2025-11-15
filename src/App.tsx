@@ -1,24 +1,42 @@
-import React, {FC, useState, useEffect} from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import './App.css';
 import { format } from 'date-fns';
 
-const baseURL : string = "https://api.aladhan.com/v1/timingsByAddress/";
-const URLendpoint : string = "?address=Guildford%2C+UK&method=3&shafaq=general&tune=5%2C3%2C5%2C7%2C9%2C-1%2C0%2C8%2C-6&timezonestring=UTC&calendarMethod=UAQ";
+const baseURL: string = "https://api.aladhan.com/v1/timings/";
+const URLendpoint: string = "&method=3&shafaq=general&tune=5%2C3%2C5%2C7%2C9%2C-1%2C0%2C8%2C-6&timezonestring=UTC&calendarMethod=UAQ";
 
-const App : FC = () => {
+const App: FC = () => {
 
-  let coords : number[] = [0,0];
-  let location : string  = '';
   const [date, setDate] = useState('DD-MM-YYYY');
-  
+  const [coords, setCoords] = useState<[number, number]>([0, 0]);
+
   //Format Date
   useEffect(() => {
     const today = format(new Date(), 'dd-MM-yyyy');
     setDate(today);
-  })
+  }, [])
 
-  //Constructing URL
-  let URL : string = baseURL + date + URLendpoint;
+  //Fetch user location
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCoords([
+          position.coords.latitude,
+          position.coords.longitude
+        ]);
+        console.log(coords);
+      },
+      (error) => {
+        console.error("Location error:", error);
+        //default to Guildford
+        setCoords([
+          1,
+          1
+        ])
+        console.log("error getting coords");
+      }
+    )
+  }, [])
 
   const [fajr, setFajr] = useState('00:00');
   const [dhuhr, setDhuhr] = useState('00:00');
@@ -30,48 +48,32 @@ const App : FC = () => {
 
   //fetch Prayer Time data from URL
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await fetch(URL)
-      result.json().then(json => {
-        console.log(json);
-        setFajr(json.data.timings.Fajr);
-        setDhuhr(json.data.timings.Dhuhr);
-        setAsr(json.data.timings.Asr);
-        setMaghrib(json.data.timings.Maghrib);
-        setIsha(json.data.timings.Isha);
-        setSunrise(json.data.timings.Sunrise);
-        setSunset(json.data.timings.Sunset);
-      })
-    }
-    fetchData();
-  }, []);
+    if (date !== 'DD-MM-YYYY' && coords[0] !== 0 && coords[1] !== 0) {
+      //Constructing URL
+      let URL: string = baseURL + date + "?latitude=" + coords[0] + "&longitude=" + coords[1] + URLendpoint;
 
-  //Fetch user location
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        coords = [
-          position.coords.latitude,
-          position.coords.longitude
-        ];
-        console.log(coords);
-      },
-      (error) => {
-        console.error("Location error:", error);
-        //default to Guildford
-        coords = [
-          51.24436312957442, 
-          -0.5678265590129494
-        ]
-        console.log("error getting coords");
+      //Executing request
+      const fetchData = async () => {
+        const result = await fetch(URL)
+        result.json().then(json => {
+          console.log(json);
+          setFajr(json.data.timings.Fajr);
+          setDhuhr(json.data.timings.Dhuhr);
+          setAsr(json.data.timings.Asr);
+          setMaghrib(json.data.timings.Maghrib);
+          setIsha(json.data.timings.Isha);
+          setSunrise(json.data.timings.Sunrise);
+          setSunset(json.data.timings.Sunset);
+        })
       }
-    )
-  }, [])
+      fetchData();
+    }
+  }, [date, coords]);
 
   return (
     <React.Fragment>
-      <h1 style={{color: 'darkgreen'}}>React Prayer Times</h1>
-      Date: {date}, Guildford, UK
+      <h1 style={{ color: 'darkgreen' }}>React Prayer Times</h1>
+      Date: {date}, Latitude: {coords[0]}, Longitude: {coords[1]}
       <ul>
         <li><b>Fajr:</b> {fajr}</li>
         <li><b>Dhuhr:</b> {dhuhr}</li>
@@ -84,7 +86,7 @@ const App : FC = () => {
         <li className='sun'><b>Sunrise:</b> {sunrise}</li>
         <li className='sun'><b>Sunset:</b> {sunset}</li>
       </ul>
-      
+
     </React.Fragment>
   )
 }
