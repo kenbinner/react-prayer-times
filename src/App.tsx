@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 
 //Prayer time API
 const prayerBaseURL: string = "https://api.aladhan.com/v1/timings/";
-const prayerURLendpoint: string = "&method=3&shafaq=general&tune=5%2C3%2C5%2C7%2C9%2C-1%2C0%2C8%2C-6&timezonestring=UTC&calendarMethod=UAQ";
+const prayerURLendpoint: string = "&method=99&methodSettings=18%7Cnull%7C17&tune=15%2C19%2C-3%2C3%2C-3%2C0%2C0%2C-6%2C0&timezonestring=Europe/London&latitudeAdjustmentMethod=1";
 
 //Geocode API
 // https://api.opencagedata.com/geocode/v1/json?q=52.5432379%2C+13.4142133&key=bf950e9d1cd94fd2a239389d4c2ce056
