@@ -13,11 +13,10 @@ const geocodeURLendpoint: string = "&key=bf950e9d1cd94fd2a239389d4c2ce056";
 
 const App: FC = () => {
 
-  const [date, setDate] = useState('DD-MM-YYYY');
-  //default to Guildford
+  const [date, setDate] = useState('loading');
   const [coords, setCoords] = useState<[number, number]>([51.232768, -0.57344]);
-  const [town, setTown] = useState('default');
-  const [country, setCountry] = useState('default');
+  const [town, setTown] = useState('loading');
+  const [country, setCountry] = useState('loading');
 
   //Format Date
   useEffect(() => {
