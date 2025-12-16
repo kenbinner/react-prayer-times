@@ -2,13 +2,22 @@ import React, { FC, useState, useEffect } from 'react';
 import './App.css';
 import { format } from 'date-fns';
 
-const baseURL: string = "https://api.aladhan.com/v1/timings/";
-const URLendpoint: string = "&method=3&shafaq=general&tune=5%2C3%2C5%2C7%2C9%2C-1%2C0%2C8%2C-6&timezonestring=UTC&calendarMethod=UAQ";
+//Prayer time API
+const prayerBaseURL: string = "https://api.aladhan.com/v1/timings/";
+const prayerURLendpoint: string = "&method=3&shafaq=general&tune=5%2C3%2C5%2C7%2C9%2C-1%2C0%2C8%2C-6&timezonestring=UTC&calendarMethod=UAQ";
+
+//Geocode API
+// https://api.opencagedata.com/geocode/v1/json?q=52.5432379%2C+13.4142133&key=bf950e9d1cd94fd2a239389d4c2ce056
+const geocodeBaseURL: string = "https://api.opencagedata.com/geocode/v1/json?q=";
+const geocodeURLendpoint: string = "&key=bf950e9d1cd94fd2a239389d4c2ce056";
 
 const App: FC = () => {
 
   const [date, setDate] = useState('DD-MM-YYYY');
-  const [coords, setCoords] = useState<[number, number]>([0, 0]);
+  //default to Guildford
+  const [coords, setCoords] = useState<[number, number]>([51.232768, -0.57344]);
+  const [town, setTown] = useState('default');
+  const [country, setCountry] = useState('default');
 
   //Format Date
   useEffect(() => {
@@ -24,16 +33,10 @@ const App: FC = () => {
           position.coords.latitude,
           position.coords.longitude
         ]);
-        console.log(coords);
+        console.log("lat: " + position.coords.latitude + " long: " + position.coords.longitude);
       },
       (error) => {
         console.error("Location error:", error);
-        //default to Guildford
-        setCoords([
-          1,
-          1
-        ])
-        console.log("error getting coords");
       }
     )
   }, [])
@@ -48,9 +51,9 @@ const App: FC = () => {
 
   //fetch Prayer Time data from URL
   useEffect(() => {
-    if (date !== 'DD-MM-YYYY' && coords[0] !== 0 && coords[1] !== 0) {
+    if (date !== 'DD-MM-YYYY') {
       //Constructing URL
-      let URL: string = baseURL + date + "?latitude=" + coords[0] + "&longitude=" + coords[1] + URLendpoint;
+      let URL: string = prayerBaseURL + date + "?latitude=" + coords[0] + "&longitude=" + coords[1] + prayerURLendpoint;
 
       //Executing request
       const fetchData = async () => {
@@ -70,10 +73,29 @@ const App: FC = () => {
     }
   }, [date, coords]);
 
+  //fetch Location from Geocode URL
+  useEffect(() => {
+    if (coords[0] !== 0 && coords[1] !== 0) {
+      //Constructing URL
+      let URL: string = geocodeBaseURL + coords[0] + "%2C+" + coords[1] + geocodeURLendpoint;
+
+      //Executing request
+      const fetchData = async () => {
+        const result = await fetch(URL)
+        result.json().then(json => {
+          console.log(json);
+          setTown(json.results[0].components.town);
+          setCountry(json.results[0].components.country);
+        })
+      }
+      fetchData();
+    }
+  }, [coords]);
+
   return (
     <React.Fragment>
       <h1 style={{ color: 'darkgreen' }}>React Prayer Times</h1>
-      Date: {date}, Latitude: {coords[0]}, Longitude: {coords[1]}
+      Date: {date}, {town}, {country}
       <ul>
         <li><b>Fajr:</b> {fajr}</li>
         <li><b>Dhuhr:</b> {dhuhr}</li>
