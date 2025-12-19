@@ -1,15 +1,16 @@
 {
   "files": {
     "main.css": "/react-prayer-times/static/css/main.3eb2324d.css",
-    "main.js": "/react-prayer-times/static/js/main.7828e75b.js",
+    "main.js": "/react-prayer-times/static/js/main.d0c13595.js",
     "static/js/453.313272d6.chunk.js": "/react-prayer-times/static/js/453.313272d6.chunk.js",
+    "static/media/geo-icon.png": "/react-prayer-times/static/media/geo-icon.0ccbe4b37fd0d2270a5e.png",
     "index.html": "/react-prayer-times/index.html",
     "main.3eb2324d.css.map": "/react-prayer-times/static/css/main.3eb2324d.css.map",
-    "main.7828e75b.js.map": "/react-prayer-times/static/js/main.7828e75b.js.map",
+    "main.d0c13595.js.map": "/react-prayer-times/static/js/main.d0c13595.js.map",
     "453.313272d6.chunk.js.map": "/react-prayer-times/static/js/453.313272d6.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3eb2324d.css",
-    "static/js/main.7828e75b.js"
+    "static/js/main.d0c13595.js"
   ]
 }
