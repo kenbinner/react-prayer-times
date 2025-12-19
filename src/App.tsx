@@ -1,6 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
 import './App.css';
 import { format } from 'date-fns';
+import axios, { AxiosResponse } from "axios";
+import geoIcon from './assets/geo-icon.png';
 
 //Prayer time API
 const prayerBaseURL: string = "https://api.aladhan.com/v1/timings/";
@@ -56,16 +58,17 @@ const App: FC = () => {
 
       //Executing request
       const fetchData = async () => {
-        const result = await fetch(URL)
-        result.json().then(json => {
-          console.log(json);
-          setFajr(json.data.timings.Fajr);
-          setDhuhr(json.data.timings.Dhuhr);
-          setAsr(json.data.timings.Asr);
-          setMaghrib(json.data.timings.Maghrib);
-          setIsha(json.data.timings.Isha);
-          setSunrise(json.data.timings.Sunrise);
-          setSunset(json.data.timings.Sunset);
+        axios
+          .get(URL)
+          .then((result: AxiosResponse) => {
+          console.log(result);
+          setFajr(result.data.data.timings.Fajr);
+          setDhuhr(result.data.data.timings.Dhuhr);
+          setAsr(result.data.data.timings.Asr);
+          setMaghrib(result.data.data.timings.Maghrib);
+          setIsha(result.data.data.timings.Isha);
+          setSunrise(result.data.data.timings.Sunrise);
+          setSunset(result.data.data.timings.Sunset);
         })
       }
       fetchData();
@@ -94,7 +97,7 @@ const App: FC = () => {
   return (
     <React.Fragment>
       <h1 style={{ color: 'darkgreen' }}>React Prayer Times</h1>
-      Date: {date}, {town}, {country}
+      Date: {date}
       <ul>
         <li><b>Fajr:</b> {fajr}</li>
         <li><b>Dhuhr:</b> {dhuhr}</li>
@@ -107,7 +110,9 @@ const App: FC = () => {
         <li className='sun'><b>Sunrise:</b> {sunrise}</li>
         <li className='sun'><b>Sunset:</b> {sunset}</li>
       </ul>
-
+      
+      <br/>
+    <img src={geoIcon} style={{width: 15}}/> {town}, {country}
     </React.Fragment>
   )
 }
