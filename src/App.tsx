@@ -56,7 +56,7 @@ const App: FC = () => {
       //Constructing URL
       let URL: string = prayerBaseURL + date + "?latitude=" + coords[0] + "&longitude=" + coords[1] + prayerURLendpoint;
 
-      //Executing request
+      //Executing request WITH axios
       const fetchData = async () => {
         axios
           .get(URL)
@@ -81,7 +81,7 @@ const App: FC = () => {
       //Constructing URL
       let URL: string = geocodeBaseURL + coords[0] + "%2C+" + coords[1] + geocodeURLendpoint;
 
-      //Executing request
+      //Executing request WITHOUT axios
       const fetchData = async () => {
         const result = await fetch(URL)
         result.json().then(json => {
